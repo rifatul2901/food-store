@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Employee\AuthController;
+use App\Http\Controllers\Employee\DashboardController;
 
 //route register
 Route::get('/register', Auth\Register::class)->name('register');
@@ -46,3 +48,21 @@ Route::get('/cart', Web\Cart\Index::class)->name('web.cart.index')->middleware('
 
 //route checkout
 Route::get('/checkout', Web\Checkout\Index::class)->name('web.checkout.index')->middleware('auth:customer');
+
+//tambahan
+Route::prefix('karyawan')->name('employee.')->group(function () {
+
+    // Halaman login karyawan
+    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
+
+    // Proses login
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Dashboard — dilindungi middleware auth.employee buatan Charistia
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->middleware('auth.employee')
+        ->name('dashboard');
+});
