@@ -53,7 +53,7 @@ Route::get('/checkout', Web\Checkout\Index::class)->name('web.checkout.index')->
 Route::prefix('karyawan')->name('employee.')->group(function () {
 
     // Halaman login karyawan
-    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
+    Route::get('/', [AuthController::class, 'index'])->name('login');
 
     // Proses login
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');

@@ -9,7 +9,7 @@ class AuthEmployee
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!session('employee_id')) {
+        if (!session()->has('employee')) {
             return redirect('/karyawan')->with('error', 'Silakan login terlebih dahulu.');
         }
 
