@@ -10,7 +10,7 @@ class Attendance extends Model
         'employee_id',
         'date',
         'time',
-        'qr_token'
+        'qr_token',
     ];
 
     public function employee()

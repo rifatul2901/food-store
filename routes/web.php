@@ -65,4 +65,9 @@ Route::prefix('karyawan')->name('employee.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware('auth.employee')
         ->name('dashboard');
+
+         // Absensi
+    Route::post('/absensi', [DashboardController::class, 'scanQR'])
+        ->middleware('auth.employee')
+        ->name('absensi');
 });
