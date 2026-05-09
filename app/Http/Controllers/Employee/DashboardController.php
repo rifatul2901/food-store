@@ -10,7 +10,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('employee.dashboard');
+        $employeeId = session('employee')['id'];
+
+        // Ambil rekap absensi milik karyawan yang login, urutkan terbaru
+        $attendances = Attendance::where('employee_id', $employeeId)
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
+            ->get();
+
+        return view('employee.dashboard', compact('attendances'));
     }
 
     public function scanQR(\Illuminate\Http\Request $request)
@@ -19,7 +27,6 @@ class DashboardController extends Controller
         $employeeId = session('employee')['id'];
         $today      = now()->toDateString();
 
-        // Cek token valid dan untuk hari ini
         $qr = QrSession::where('token', $token)
             ->where('date', $today)
             ->first();
@@ -31,7 +38,6 @@ class DashboardController extends Controller
             ]);
         }
 
-        // Cek apakah karyawan sudah absen hari ini
         $sudahAbsen = Attendance::where('employee_id', $employeeId)
             ->where('date', $today)
             ->exists();
@@ -43,7 +49,6 @@ class DashboardController extends Controller
             ]);
         }
 
-        // Simpan data absensi
         Attendance::create([
             'employee_id' => $employeeId,
             'date'        => $today,

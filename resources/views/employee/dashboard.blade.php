@@ -8,6 +8,7 @@
     <small class="text-muted fs-6">— {{ session('employee')['position'] }}</small>
 </h4>
 
+{{-- Tombol Scan QR --}}
 <div class="card mb-4 shadow-sm">
     <div class="card-header fw-bold">📷 Scan QR Absensi</div>
     <div class="card-body text-center">
@@ -22,6 +23,7 @@
     </div>
 </div>
 
+{{-- Tabel Rekap Absensi --}}
 <div class="card shadow-sm">
     <div class="card-header fw-bold">📋 Rekap Absensi Saya</div>
     <div class="card-body">
@@ -35,17 +37,25 @@
                 </tr>
             </thead>
             <tbody>
+                @forelse($attendances as $index => $absen)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ \Carbon\Carbon::parse($absen->date)->format('d-m-Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($absen->time)->format('H:i:s') }}</td>
+                    <td><span class="badge bg-success">Hadir</span></td>
+                </tr>
+                @empty
                 <tr>
                     <td colspan="4" class="text-center text-muted">
                         Belum ada data absensi.
                     </td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 </div>
 
-{{-- Library dan Script langsung di sini --}}
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
     let html5QrCode = null;
